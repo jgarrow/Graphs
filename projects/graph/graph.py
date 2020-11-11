@@ -26,21 +26,64 @@ class Graph:
         """
         Get all neighbors (edges) of a vertex.
         """
-        pass  # TODO
+        
+        return self.vertices[vertex_id]
 
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        visited_verts = set()
+        queue = Queue()
+        queue.enqueue(starting_vertex)
+        
+        while queue.size() > 0:
+            curr_vert = queue.dequeue()
 
+            if curr_vert not in visited_verts:
+                visited_verts.add(curr_vert)
+                print(curr_vert)
+
+                neighbors = self.get_neighbors(curr_vert)
+
+                for vert in neighbors:
+                    queue.enqueue(vert)
+
+        
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # use stack
+        # keep track of where we've been
+        # check very vert once and check every connection once
+        stack = Stack()
+        stack.push(starting_vertex)
+
+        visited = set()
+
+        # put the start vert into stack
+        # while the stack is not empty
+        while stack.size() > 0:
+            # pop off the top of the stack, this is our current node
+            curr_node = stack.pop()
+
+            # check if we have visited this node yet
+            # if not, add it to our visited set
+            if curr_node not in visited:
+                visited.add(curr_node)
+                print(curr_node)
+
+                # get each of its neighbors
+                # and add them neighbors to our stack
+                neighbors = self.get_neighbors(curr_node)
+
+                for vert in neighbors:
+                    stack.push(vert)
+
+        
 
     def dft_recursive(self, starting_vertex):
         """
