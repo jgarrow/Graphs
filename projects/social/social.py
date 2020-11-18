@@ -29,7 +29,6 @@ class SocialGraph:
         self.friendships[self.last_id] = set()
 
     def populate_graph(self, num_users, avg_friendships):
-        print(f'num_users: {num_users}')
         """
         Takes a number of users and an average number of friendships
         as arguments
@@ -56,19 +55,19 @@ class SocialGraph:
         # create a list with all possible friendship combinations, 
         # friendship_combos = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
         friendship_combos = []
-​
+
         for user_id in range(1, num_users + 1):
-            # You can avoid this by only creating friendships where user1 < user2
+            # only creating friendships where user1 < user2
             for friend_id in range(user_id + 1, num_users + 1):
                 friendship_combos.append((user_id, friend_id))
-​
+
         # shuffle the list 
         import random
         random.shuffle(friendship_combos)
 
         # then grab the first N elements from the list
         friendships_to_make = friendship_combos[:(total_friendships // 2)]
-​
+
         for friendship in friendships_to_make:
             self.add_friendship(friendship[0], friendship[1])
 
@@ -83,6 +82,24 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+
+        # bft -- get shortest path to every friend of user_id
+        queue = []
+        queue.append([user_id])
+
+        while len(queue) > 0:
+            path = queue.pop(0)
+            new_user = path[-1]
+
+            if new_user not in visited:
+                visited[new_user] = path
+
+                for i in self.friendships[new_user]:
+                    if i not in visited:
+                        new_path = list(path)
+                        new_path.append(i)
+                        queue.append(new_path)
+
         return visited
 
 
